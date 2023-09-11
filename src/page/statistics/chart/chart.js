@@ -51,6 +51,8 @@ function getPieOptions(data) {
       right: '5%',
       top: 'middle',
       height: 200,
+      itemGap: 20,
+      icon: 'circle',
       formatter: function (name) {
         const value = data.find(item => item.name === name).value
         return name + ' ' + value + '元';
@@ -61,13 +63,9 @@ function getPieOptions(data) {
       {
         name: '',
         type: 'pie',
-        radius: ['40%', '60%'],
-        center: ['35%', '50%'],
+        radius: ['46%', '70%'],
+        center: ['28%', '50%'],
         avoidLabelOverlap: false,
-        // top: '10px',
-        // left: '28px',
-        // right: '6px',
-        // bottom: '36px',
         label: {
           show: false,
           position: 'left'

@@ -1,8 +1,6 @@
 <template>
   <common-title :title="title" :value="value" :editable="editable" />
-  <div>
-    <div id="chart" ref="chartRef"></div>
-  </div>
+  <div id="chart" ref="chartRef"></div>
   <div class="blank"></div>
 </template>
 

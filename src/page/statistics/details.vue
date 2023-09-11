@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <div class="details">
-      <h3>重庆公租房</h3>
+      <h3>{{ name }}</h3>
       <div class="content">
         <p>
           <span>累计应收：<span>{{ formatStr(data.receive + '') }}</span></span>
@@ -24,14 +24,15 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
-import { ref, reactive, markRaw } from 'vue'
+import { useRoute } from 'vue-router';
+import { ref, reactive, markRaw } from 'vue';
 import Layout from '@/components/layout.vue';
-import device from './components/device.vue'
-import operate from './components/operate.vue'
-import parking from './components/parking.vue'
+import device from './components/device.vue';
+import operate from './components/operate.vue';
+import parking from './components/parking.vue';
 
 const route = useRoute()
+const name = ref(route.query.name)
 const active = ref('运营数据')
 const tabList = markRaw([
   { title: '运营数据', name: operate },

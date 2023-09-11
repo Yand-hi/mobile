@@ -3,7 +3,7 @@
     title-inactive-color="#666">
     <van-tab v-for="tab in tabList" :title="tab">
       <van-cell-group>
-        <van-cell v-for="item in list" :title="item.title" :value="randomNum(10000, 2)" value-class="right" is-link
+        <van-cell v-for="item in list" :title="item.title" :value="item.value" value-class="right" is-link
           to="/revenueTrend" />
       </van-cell-group>
     </van-tab>
@@ -18,10 +18,10 @@ const tabList = ref(['昨日', '本周', '当月', '上月', '半年', '一年']
 const list = ref([
   { title: '应收总额', value: randomNum(10000, 2) },
   { title: '实收总额', value: randomNum(10000, 2) },
-  { title: '收费率', value: randomNum(10000, 2) },
+  { title: '收费率', value: randomNum(100, 0) + '%' },
   { title: '临停收入', value: randomNum(10000, 2) },
   { title: '长期收入', value: randomNum(10000, 2) },
-  { title: '月卡收入', value: randomNum(10000, 2) },
+  { title: '月卡收入', value: randomNum(100, 0) + '%' },
   { title: '欠费金额', value: randomNum(10000, 2) },
   { title: '补缴金额', value: randomNum(10000, 2) },
 ])

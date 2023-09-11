@@ -12,11 +12,11 @@ import Layout from '@/components/layout.vue';
 import commonChart from '../components/commonChart.vue';
 
 const chartData = ref([
-  { value: 1048, name: '临停' },
-  { value: 735, name: '长期' },
-  { value: 580, name: '月卡' },
-  { value: 484, name: '补缴' },
-  { value: 484, name: '其他' },
+  { value: 3431.41, rate: '20%', name: '临停' },
+  { value: 3431.41, rate: '20%', name: '长期' },
+  { value: 3431.41, rate: '20%', name: '月卡' },
+  { value: 3431.41, rate: '20%', name: '补缴' },
+  { value: 3431.41, rate: '20%', name: '其他' },
 ])
 </script>
 
