@@ -1,8 +1,9 @@
 <template>
   <common-title :title="title" :value="value" :editable="editable" />
-  <div class="wrapper">
+  <div>
     <div id="chart" ref="chartRef"></div>
   </div>
+  <div class="blank"></div>
 </template>
 
 <script setup>
@@ -28,5 +29,14 @@ onMounted(() => {
 #chart {
   width: 100%;
   height: 240px;
+}
+
+.blank {
+  height: 8px;
+  background-color: #f2f2f2;
+
+  &:last-child {
+    display: none;
+  }
 }
 </style>

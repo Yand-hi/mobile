@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 const list = ref([
   { title: '地磁', value: 0 },

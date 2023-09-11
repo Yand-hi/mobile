@@ -14,7 +14,11 @@ function getLineOptions(data) {
   const lineOptions = {
     xAxis: {
       type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      data: ['9/5', '9/6', '9/7', '9/8', '9/9', '9/10', '9/11'],
+      boundaryGap: true,
+      axisTick: {
+        alignWithLabel: true
+      }
     },
     yAxis: {
       type: 'value'
@@ -22,9 +26,15 @@ function getLineOptions(data) {
     series: [
       {
         type: 'line',
-        data: [150, 230, 224, 218, 135, 147, 260],
+        data: [15, 23, 22, 21, 13, 14, 26],
       }
-    ]
+    ],
+    grid: {
+      top: '28px',
+      left: '28px',
+      right: '6px',
+      bottom: '36px'
+    }
   };
 
   return lineOptions;
@@ -46,13 +56,18 @@ function getPieOptions(data) {
         return name + ' ' + value + '元';
       }
     },
+    color: ['#3aa1ff', '#f2637b', '#fbd437', '#4ecb73', '#36cbcb'],
     series: [
       {
-        name: 'Access From',
+        name: '',
         type: 'pie',
         radius: ['40%', '60%'],
         center: ['35%', '50%'],
         avoidLabelOverlap: false,
+        // top: '10px',
+        // left: '28px',
+        // right: '6px',
+        // bottom: '36px',
         label: {
           show: false,
           position: 'left'
@@ -69,7 +84,10 @@ function getPieOptions(data) {
         },
         data: data
       }
-    ]
+    ],
+    grid: {
+      top: '28px',
+    }
   };
 
   return pieOptions;
@@ -79,7 +97,11 @@ function getBarOptions(data) {
   const barOptions = {
     xAxis: {
       type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      data: ['9/5', '9/6', '9/7', '9/8', '9/9', '9/10', '9/11'],
+      boundaryGap: true,
+      axisTick: {
+        alignWithLabel: true
+      }
     },
     yAxis: {
       type: 'value'
@@ -87,9 +109,19 @@ function getBarOptions(data) {
     series: [
       {
         type: 'bar',
-        data: [120, 200, 150, 80, 70, 110, 130]
+        data: [24, 66, 55, 80, 70, 32, 18],
+        barWidth: '24px',
+        itemStyle: {
+          color: '#3aa1ff'
+        },
       }
-    ]
+    ],
+    grid: {
+      top: '28px',
+      left: '28px',
+      right: '6px',
+      bottom: '36px'
+    }
   };
 
   return barOptions;

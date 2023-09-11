@@ -1,19 +1,21 @@
 <template>
-  <div class="wrapper">
-    <span>{{ title }}</span>
-    <span class="date">
-      <span>{{ formatDate() }}</span>
-      <van-icon @click="() => show = true" v-if="editable" name="clock-o" color="#1989fa" />
-    </span>
+  <div>
+    <div class="wrapper">
+      <span>{{ title }}</span>
+      <span class="date">
+        <span>{{ formatDate() }}</span>
+        <van-icon @click="openDatePicker" v-if="editable" name="clock-o" color="#1989fa" />
+      </span>
+    </div>
+    <div class="line"></div>
+    <van-popup v-model="show" position="bottom" :overlay="false">
+      <van-date-picker v-model="currentDate" type="date" :min-date="minDate" title="选择日期" />
+    </van-popup>
   </div>
-  <div class="line"></div>
-  <van-popup v-model="show" position="top" :overlay="false">
-    <van-datetime-picker v-model="currentDate" type="date" :min-date="minDate" />
-  </van-popup>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue';
 
 defineProps({
   title: String,
@@ -21,7 +23,7 @@ defineProps({
 })
 
 const show = ref(false)
-const minDate = ref(new Date())
+const minDate = ref(new Date(1900, 0, 1))
 const currentDate = ref(new Date())
 
 function formatDate() {
@@ -32,8 +34,9 @@ function formatDate() {
   return `${year}-${month}-${day}`;
 }
 
-function changeDate() {
-
+function openDatePicker() {
+  console.log('open');
+  show.value = true;
 }
 </script>
 
@@ -43,7 +46,7 @@ function changeDate() {
   justify-content: space-between;
   align-items: center;
   margin: 18px 14px 12px;
-  padding: 5px 8px;
+  padding: 5px 4px 5px 8px;
   border-left: 2px solid #1989fa;
 }
 
@@ -60,6 +63,7 @@ function changeDate() {
 
   >span {
     font-size: 14px;
+    color: #999;
   }
 }
 

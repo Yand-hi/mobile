@@ -22,7 +22,6 @@ const route = useRoute()
 .layout-wrapper {
   position: relative;
   width: 100vw;
-  /* height: 100vh; */
 }
 
 .navbar {
