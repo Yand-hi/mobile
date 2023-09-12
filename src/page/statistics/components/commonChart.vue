@@ -14,7 +14,7 @@ const { chartData, chartType } = defineProps({
   value: String,
   title: String,
   chartType: String,
-  chartData: Array,
+  chartData: Object,
   editable: Boolean
 })
 

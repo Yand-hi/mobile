@@ -32,7 +32,7 @@ function getLineOptions(data) {
     grid: {
       top: '28px',
       left: '28px',
-      right: '6px',
+      right: '10px',
       bottom: '36px'
     }
   };
@@ -40,7 +40,9 @@ function getLineOptions(data) {
   return lineOptions;
 }
 
-function getPieOptions(data) {
+function getPieOptions({ title, data }) {
+  const colorList = ['#3aa1ff', '#f2637b', '#fbd437', '#4ecb73', '#36cbcb'];
+
   const pieOptions = {
     tooltip: {
       trigger: 'item',
@@ -53,33 +55,65 @@ function getPieOptions(data) {
       height: 200,
       itemGap: 20,
       icon: 'circle',
-      formatter: function (name) {
-        const value = data.find(item => item.name === name).value
-        return name + ' ' + value + '元';
+      formatter: function (name, index) {
+        let total = 0
+        let target
+        for (let i = 0; i < data.length; i++) {
+          total += data[i].value
+          if (data[i].name === name) {
+            target = data[i].value
+          }
+        }
+        const arr = [
+          '{a|' + name + '}',
+          '{b|' + ((target / total) * 100).toFixed(2) + '%}',
+          '{c|' + target + '元}',
+        ]
+        if (title === '车场分布情况') {
+          delete arr[2]
+        }
+        return arr.join('  ')
+      },
+      textStyle: {
+        color: 'inherit',
+        padding: [2, 0, 0],
+        rich: {
+          a: {
+            fontSize: 12,
+            // color: '#999'
+          },
+          b: {
+            fontSize: 12,
+            padding: [0, 2],
+          },
+          c: {
+            fontSize: 12
+          }
+        }
       }
     },
-    color: ['#3aa1ff', '#f2637b', '#fbd437', '#4ecb73', '#36cbcb'],
+    color: colorList,
     series: [
       {
-        name: '',
+        name: title,
         type: 'pie',
         radius: ['46%', '70%'],
-        center: ['28%', '50%'],
-        avoidLabelOverlap: false,
+        center: ['27%', '50%'],
+        // avoidLabelOverlap: false,
         label: {
           show: false,
           position: 'left'
         },
-        emphasis: {
-          label: {
-            show: true,
-            fontSize: 40,
-            fontWeight: 'bold'
-          }
-        },
-        labelLine: {
-          show: false
-        },
+        // emphasis: {
+        //   label: {
+        //     show: false,
+        //     // fontSize: 40,
+        //     // fontWeight: 'bold'
+        //   }
+        // },
+        // labelLine: {
+        //   show: false
+        // },
         data: data
       }
     ],
@@ -117,7 +151,7 @@ function getBarOptions(data) {
     grid: {
       top: '28px',
       left: '28px',
-      right: '6px',
+      right: '10px',
       bottom: '36px'
     }
   };
@@ -129,10 +163,10 @@ export default function drawChart(chartDom, chartData, chartType) {
   if (!chartDom) return;
 
   let myChart = echarts.init(chartDom);
-  let option = getOptions(chartType, chartData);
+  let options = getOptions(chartType, chartData);
 
   if (myChart) {
     window.addEventListener('resize', myChart.resize());
-    myChart.setOption(option);
+    myChart.setOption(options);
   }
 }

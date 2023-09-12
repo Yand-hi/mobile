@@ -7,17 +7,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { reactive } from 'vue';
 import Layout from '@/components/layout.vue';
 import commonChart from '../components/commonChart.vue';
 
-const chartData = ref([
-  { value: 3431.41, rate: '20%', name: '临停' },
-  { value: 3431.41, rate: '20%', name: '长期' },
-  { value: 3431.41, rate: '20%', name: '月卡' },
-  { value: 3431.41, rate: '20%', name: '补缴' },
-  { value: 3431.41, rate: '20%', name: '其他' },
-])
+const chartData = reactive({
+  title: '收入占比',
+  data: [
+    { value: 3431.41, name: '临停' },
+    { value: 3431.41, name: '长期' },
+    { value: 3431.41, name: '月卡' },
+    { value: 3431.41, name: '补缴' },
+    { value: 3431.41, name: '其他' },
+  ]
+})
 </script>
 
 <style lang="scss" scoped></style>
