@@ -8,8 +8,9 @@
       </span>
     </div>
     <div class="line"></div>
-    <van-popup v-model="show" position="bottom" :overlay="false">
-      <van-date-picker v-model="currentDate" type="date" :min-date="minDate" title="选择日期" />
+    <van-popup v-model:show="show" :overlay="false" position="bottom" :style="{ height: '30%' }">
+      <van-date-picker v-model="currentDate" type="date" :max-date="maxDate" title="选择日期" @cancel="cancelDate"
+        @confirm="confirmDate" />
     </van-popup>
   </div>
 </template>
@@ -23,8 +24,9 @@ defineProps({
 })
 
 const show = ref(false)
-const minDate = ref(new Date(1900, 0, 1))
-const currentDate = ref(new Date())
+// const minDate = ref(new Date(2023, 8, 6))
+const maxDate = ref(new Date(2023, 8, 12))
+const currentDate = ref(['2023', '09', '12'])
 
 function formatDate() {
   const date = new Date();
@@ -35,8 +37,16 @@ function formatDate() {
 }
 
 function openDatePicker() {
-  console.log('open');
   show.value = true;
+}
+
+function cancelDate() {
+  show.value = false;
+}
+
+function confirmDate(data) {
+  console.log(data);
+  cancelDate();
 }
 </script>
 

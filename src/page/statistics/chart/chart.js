@@ -14,7 +14,7 @@ function getLineOptions(data) {
   const lineOptions = {
     xAxis: {
       type: 'category',
-      data: ['9/5', '9/6', '9/7', '9/8', '9/9', '9/10', '9/11'],
+      data: ['9/6', '9/7', '9/8', '9/9', '9/10', '9/11', '9/12'],
       boundaryGap: true,
       axisTick: {
         alignWithLabel: true
@@ -27,7 +27,7 @@ function getLineOptions(data) {
       {
         type: 'line',
         data: [15, 23, 22, 21, 13, 14, 26],
-      }
+      },
     ],
     grid: {
       top: '28px',
@@ -48,7 +48,6 @@ function getPieOptions({ title, data }) {
       trigger: 'item',
     },
     legend: {
-      selectedMode: false,
       orient: 'vertical',
       right: '5%',
       top: 'middle',
@@ -80,7 +79,6 @@ function getPieOptions({ title, data }) {
         rich: {
           a: {
             fontSize: 12,
-            // color: '#999'
           },
           b: {
             fontSize: 12,
@@ -99,21 +97,9 @@ function getPieOptions({ title, data }) {
         type: 'pie',
         radius: ['46%', '70%'],
         center: ['27%', '50%'],
-        // avoidLabelOverlap: false,
         label: {
           show: false,
-          position: 'left'
         },
-        // emphasis: {
-        //   label: {
-        //     show: false,
-        //     // fontSize: 40,
-        //     // fontWeight: 'bold'
-        //   }
-        // },
-        // labelLine: {
-        //   show: false
-        // },
         data: data
       }
     ],

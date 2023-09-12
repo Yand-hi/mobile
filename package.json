@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "echarts": "^5.4.3",
-    "vant": "^4.6.7",
+    "vant": "^4.6.8",
     "vue": "^3.2.4",
     "vue-router": "^4.2.4"
   },
