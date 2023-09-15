@@ -15,7 +15,8 @@
           </p>
           <p class="arrears">
             <span>同比增长</span>
-            <span :class="createClassName(Number(item.arrears))">{{ item.arrears !== 0 ? item.arrears + '%' : item.arrears }}</span>
+            <span :class="createClassName(Number(item.arrears))">{{ item.arrears !== 0 ? item.arrears + '%' : item.arrears
+            }}</span>
           </p>
         </div>
       </li>
@@ -27,11 +28,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import Layout from '@/components/layout.vue';
+import { projectList } from '@/api/index';
 
-const router = useRouter()
+const router = useRouter();
 const dataList = ref([
   {
     id: (Math.random() * 100).toFixed(0),
@@ -59,8 +61,8 @@ const dataList = ref([
     income: 0,
     arrears: 0
   }
-])
-const currentPage = ref(1)
+]);
+const currentPage = ref(1);
 
 function createClassName(num) {
   if (num > 0) {
@@ -73,12 +75,21 @@ function createClassName(num) {
 }
 
 function formatStr(str) {
-  return str.replace(/\B(?=(\d{4})+(?!\d))/g, ',')
+  return str.replace(/\B(?=(\d{4})+(?!\d))/g, ',');
 }
 
 function goto(id, name) {
-  router.push(`./statistics/${id}?name=${name}`)
+  router.push(`./statistics/${id}?name=${name}`);
 }
+
+async function getProjectList() {
+  const { data } = await projectList();
+  console.log(data);
+}
+
+onMounted(() => {
+  getProjectList();
+});
 </script>
 
 <style lang="scss" scoped>
