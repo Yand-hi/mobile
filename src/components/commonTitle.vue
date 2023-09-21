@@ -16,17 +16,19 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 defineProps({
   title: String,
   editable: Boolean
-})
+});
 
-const show = ref(false)
-// const minDate = ref(new Date(2023, 8, 6))
-const maxDate = ref(new Date(2023, 8, 12))
-const currentDate = ref(['2023', '09', '12'])
+const day = new Date().getDate();
+const year = new Date().getFullYear();
+const month = new Date().getMonth() + 1;
+const show = ref(false);
+const maxDate = ref(new Date());
+const currentDate = ref([year, month, day]);
 
 function formatDate() {
   const date = new Date();
@@ -44,10 +46,13 @@ function cancelDate() {
   show.value = false;
 }
 
-function confirmDate(data) {
-  console.log(data);
+function confirmDate() {
   cancelDate();
 }
+
+watchEffect(() => {
+  console.log(currentDate.value);
+});
 </script>
 
 <style lang="scss" scoped>

@@ -4,25 +4,24 @@
       <li v-for="item in dataList">
         <div class="name">
           <p>
-            <span>{{ item.name }}</span>
-            <span @click="goto(item.id, item.name)">详情 ></span>
+            <span>{{ item.projectName }}</span>
+            <span @click="goto(item.projectName)">详情 ></span>
           </p>
         </div>
         <div class="content">
           <p class="income">
             <span>昨日营收</span>
-            <span :class="createClassName(Number(item.arrears))">{{ formatStr(item.income + '') }}</span>
+            <span :class="createClassName(item.growthRate)">{{ formatStr(item.beforeReceivableAmount + '') }}</span>
           </p>
           <p class="arrears">
             <span>同比增长</span>
-            <span :class="createClassName(Number(item.arrears))">{{ item.arrears !== 0 ? item.arrears + '%' : item.arrears
-            }}</span>
+            <span :class="createClassName(item.growthRate)">{{ item.growthRate }}</span>
           </p>
         </div>
       </li>
     </ul>
     <div class="pagination">
-      <van-pagination v-model="currentPage" :page-count="12" mode="simple" />
+      <van-pagination v-model="currentPage" :page-count="total" mode="simple" @change="getProjectList" />
     </div>
   </Layout>
 </template>
@@ -34,40 +33,15 @@ import Layout from '@/components/layout.vue';
 import { projectList } from '@/api/index';
 
 const router = useRouter();
-const dataList = ref([
-  {
-    id: (Math.random() * 100).toFixed(0),
-    name: '重庆公租房',
-    income: 232131.06,
-    arrears: 3.3
-  }, {
-    id: (Math.random() * 100).toFixed(0),
-    name: '眉山城市停车',
-    income: 63213.07,
-    arrears: -2.1
-  }, {
-    id: (Math.random() * 100).toFixed(0),
-    name: '阆中城市停车',
-    income: 23213.11,
-    arrears: 1.1
-  }, {
-    id: (Math.random() * 100).toFixed(0),
-    name: '犍为城市停车',
-    income: 23213.11,
-    arrears: 1.1
-  }, {
-    id: (Math.random() * 100).toFixed(0),
-    name: '峨眉山城市停车',
-    income: 0,
-    arrears: 0
-  }
-]);
+const dataList = ref([]);
+const total = ref(1);
+const pageSize = ref(5);
 const currentPage = ref(1);
 
-function createClassName(num) {
-  if (num > 0) {
+function createClassName(rate) {
+  if (rate !== '0' && !rate.includes('-')) {
     return 'plus';
-  } else if (num < 0) {
+  } else if (rate.includes('-')) {
     return 'minus';
   } else {
     return 'normal';
@@ -78,13 +52,15 @@ function formatStr(str) {
   return str.replace(/\B(?=(\d{4})+(?!\d))/g, ',');
 }
 
-function goto(id, name) {
-  router.push(`./statistics/${id}?name=${name}`);
+function goto(name) {
+  router.push(`./statistics/details?projectName=${name}`);
 }
 
 async function getProjectList() {
-  const { data } = await projectList();
-  console.log(data);
+  let params = { currentPage: currentPage.value, pageSize: pageSize.value };
+  const { data } = await projectList(params);
+  total.value = Math.ceil(data.Total / pageSize.value);
+  dataList.value = data.List;
 }
 
 onMounted(() => {

@@ -5,22 +5,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
 import drawChart from '../chart/chart';
 import commonTitle from '@/components/commonTitle.vue';
 
-const chartRef = ref()
-const { chartData, chartType } = defineProps({
-  value: String,
-  title: String,
-  chartType: String,
-  chartData: Object,
-  editable: Boolean
-})
+const chartRef = ref();
+const props = defineProps(['value', 'title', 'chartType', 'chartData', 'editable']);
 
-onMounted(() => {
-  drawChart(chartRef.value, chartData, chartType)
-})
+watchEffect(() => {
+  drawChart(chartRef.value, props.chartData, props.chartType);
+});
 </script>
 
 <style lang="scss" scoped>

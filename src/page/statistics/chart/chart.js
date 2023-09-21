@@ -6,15 +6,27 @@ function getOptions(type, data = []) {
   } else if (type === 'pie') {
     return getPieOptions(data);
   } else if (type === 'bar') {
-    return getBarOptions(data)
+    return getBarOptions(data);
   }
 }
 
 function getLineOptions(data) {
+  const staticData = [
+    { xdata: '9/21', ydata: 15 },
+    { xdata: '9/20', ydata: 23 },
+    { xdata: '9/19', ydata: 22 },
+    { xdata: '9/18', ydata: 21 },
+    { xdata: '9/17', ydata: 13 },
+    { xdata: '9/16', ydata: 14 },
+    { xdata: '9/15', ydata: 14 },
+    { xdata: '9/14', ydata: 26 },
+  ];
+  const chartData = data || staticData;
+
   const lineOptions = {
     xAxis: {
       type: 'category',
-      data: ['9/6', '9/7', '9/8', '9/9', '9/10', '9/11', '9/12'],
+      data: chartData.map(i => i.xdata),
       boundaryGap: true,
       axisTick: {
         alignWithLabel: true
@@ -26,7 +38,7 @@ function getLineOptions(data) {
     series: [
       {
         type: 'line',
-        data: [15, 23, 22, 21, 13, 14, 26],
+        data: chartData.map(i => i.ydata),
       },
     ],
     grid: {
@@ -55,23 +67,23 @@ function getPieOptions({ title, data }) {
       itemGap: 20,
       icon: 'circle',
       formatter: function (name, index) {
-        let total = 0
-        let target
+        let total = 0;
+        let target;
         for (let i = 0; i < data.length; i++) {
-          total += data[i].value
+          total += data[i].value;
           if (data[i].name === name) {
-            target = data[i].value
+            target = data[i].value;
           }
         }
         const arr = [
           '{a|' + name + '}',
           '{b|' + ((target / total) * 100).toFixed(2) + '%}',
           '{c|' + target + '元}',
-        ]
+        ];
         if (title === '车场分布情况') {
-          delete arr[2]
+          delete arr[2];
         }
-        return arr.join('  ')
+        return arr.join('  ');
       },
       textStyle: {
         color: 'inherit',

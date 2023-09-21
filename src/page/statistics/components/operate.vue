@@ -1,9 +1,9 @@
 <template>
-  <van-tabs class="innerTab" sticky v-model="active" :swipe-threshold="5" line-height="0" title-active-color="#1989fa"
-    title-inactive-color="#666">
-    <van-tab v-for="tab in tabList" :title="tab">
+  <van-tabs class="innerTab" swipeable sticky v-model:active="active" :swipe-threshold="5" line-height="0"
+    title-active-color="#1989fa" title-inactive-color="#666">
+    <van-tab v-for="tab in tabList" :title="tab" :name="tab">
       <van-cell-group>
-        <van-cell v-for="item in list" :title="item.title" :value="item.value" value-class="right" is-link
+        <van-cell v-for="item in dataList" :title="item.title" :value="item.value" value-class="right" is-link
           to="/revenueTrend" />
       </van-cell-group>
     </van-tab>
@@ -11,24 +11,34 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue';
+import { useRoute } from 'vue-router';
+import { revenueData } from '@/api/index';
 
-const active = ref('昨日')
-const tabList = ref(['昨日', '本周', '当月', '上月', '半年', '一年'])
-const list = ref([
-  { title: '应收总额', value: randomNum(10000, 2) },
-  { title: '实收总额', value: randomNum(10000, 2) },
-  { title: '收费率', value: randomNum(100, 0) + '%' },
-  { title: '临停收入', value: randomNum(10000, 2) },
-  { title: '长期收入', value: randomNum(10000, 2) },
-  { title: '月卡收入', value: randomNum(100, 0) + '%' },
-  { title: '欠费金额', value: randomNum(10000, 2) },
-  { title: '补缴金额', value: randomNum(10000, 2) },
-])
+const route = useRoute();
+const projectName = ref(route.query.projectName);
+const active = ref('昨日');
+const tabList = ref(['昨日', '本周', '当月', '上月', '半年', '一年']);
+const dataList = ref([]);
+const revenueItemMap = {
+  '应收总额': 'receivableAmount',
+  '实收总额': 'receivableAmount',
+  '收费率': 'tempAmount',
+  '临停收入': 'tempAmount',
+  '长期收入': 'longAmount',
+  '月卡收入': 'longAmount',
+  '欠费金额': 'arrearAmount',
+  '补缴金额': 'replenishAmount',
+};
 
-function randomNum(multiple, digit) {
-  return (Math.random() * multiple).toFixed(digit)
+async function getRevenueData() {
+  const { data } = await revenueData({ dateType: active.value, projectName: projectName.value });
+  dataList.value = Object.keys(revenueItemMap).map(key => ({ title: key, value: data.list[revenueItemMap[key]] })) || [];
 }
+
+watchEffect(() => {
+  getRevenueData();
+});
 </script>
 
 <style lang="scss" scoped>

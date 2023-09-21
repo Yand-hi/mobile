@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <div class="details">
-      <h3>{{ name }}</h3>
+      <h3>{{ projectName }}</h3>
       <div class="content">
         <p>
           <span>累计应收：<span>{{ formatStr(data.receive + '') }}</span></span>
@@ -31,23 +31,23 @@ import device from './components/device.vue';
 import operate from './components/operate.vue';
 import parking from './components/parking.vue';
 
-const route = useRoute()
-const name = ref(route.query.name)
-const active = ref('运营数据')
+const route = useRoute();
+const projectName = ref(route.query.projectName);
+const active = ref('运营数据');
 const tabList = markRaw([
   { title: '运营数据', name: operate },
   { title: '设备数据', name: device },
   { title: '车场数据', name: parking }
-])
+]);
 const data = reactive({
   receive: 67323213.121,
   arrears: 0,
   receipts: 67323213.121,
   rate: 100,
-})
+});
 
 function formatStr(str) {
-  return str.replace(/\B(?=(\d{4})+(?!\d))/g, ',')
+  return str.replace(/\B(?=(\d{4})+(?!\d))/g, ',');
 }
 </script>
 

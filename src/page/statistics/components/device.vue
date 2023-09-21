@@ -6,8 +6,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { deviceData } from '@/api/index';
 
+const route = useRoute();
+const projectName = ref(route.query.projectName);
 const list = ref([
   { title: '地磁', value: 0 },
   { title: '高杆', value: 0 },
@@ -16,8 +20,15 @@ const list = ref([
   { title: '机器人', value: 86 },
   { title: '巡检车', value: 0 },
   { title: '车位锁', value: 0 },
-])
+]);
 
+async function getDeviceData() {
+  await deviceData({ projectName: projectName.value });
+}
+
+onMounted(() => {
+  getDeviceData();
+});
 </script>
 
 <style lang="scss" scoped>

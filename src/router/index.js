@@ -13,7 +13,7 @@ const routes = [
     component: () => import('../page/statistics/index.vue')
   },
   {
-    path: '/statistics/:id',
+    path: '/statistics/details',
     meta: {
       name: '项目详情'
     },

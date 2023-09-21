@@ -1,25 +1,38 @@
 <template>
   <van-cell-group>
-    <van-cell v-for="item in list" :title="item.title" :value="item.value" value-class="right"
-      :is-link="item.title === '总车场数'" :to="item.title === '总车场数' ? '/parkingStat' : ''" />
+    <van-cell v-for="item in dataList" :title="item.title" :value="item.value" value-class="right"
+      :is-link="item.title === '总车场数'" :to="item.title === '总车场数' ? `/parkingStat?projectName=${projectName}` : ''" />
   </van-cell-group>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { parkingLotData } from '@/api/index';
 
-const list = ref([
-  { title: '总车场数', value: 76 },
-  { title: '总车位', value: 56731 },
-  { title: '封闭式车场', value: 76 },
-  { title: '封闭式车位', value: 56731 },
-  { title: '路边车场', value: 0 },
-  { title: '路边车位', value: 0 },
-  { title: '车位周转率', value: 0 },
-  { title: '立方车场', value: 0 },
-  { title: '立方车位', value: 0 },
-])
+const route = useRoute();
+const projectName = ref(route.query.projectName);
+const dataList = ref([]);
+const parkingLotMap = {
+  '总车场数': 'carPark',
+  '总车位': 'parkSpace',
+  '封闭式车场': 'outwayCarPark',
+  '封闭式车位': 'outwaySpace',
+  '路边车场': 'inwayCarPark',
+  '路边车位': 'inwaySpace',
+  '车位周转率': 'parkingRate',
+  '立方车场': 'reformerPark',
+  '立方车位': 'reformerSpaceNum',
+};
 
+async function getParkingLotData() {
+  const { data } = await parkingLotData({ projectName: projectName.value });
+  dataList.value = Object.keys(parkingLotMap).map(key => ({ title: key, value: data.list[parkingLotMap[key]] })) || [];
+}
+
+onMounted(() => {
+  getParkingLotData();
+});
 </script>
 
 <style lang="scss" scoped>
