@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { parkingLotRatio, incrementStat } from '@/api/index';
 import Layout from '@/components/layout.vue';
@@ -14,7 +14,11 @@ import commonChart from '../components/commonChart.vue';
 
 const route = useRoute();
 const projectName = ref(route.query.projectName);
-const lineChartData = ref([]);
+const incrementStatData = ref([]);
+const lineChartData = computed(() => [{
+  name: '增量',
+  data: incrementStatData.value
+}]);
 const pieChartData = reactive({
   title: '车场分布情况',
   data: [
@@ -39,7 +43,7 @@ async function getParkingLotRatio() {
 
 async function getIncrementStat() {
   const { data } = await incrementStat({ projectName: projectName.value });
-  lineChartData.value = data.list.map(item => ({ xdata: item.month, ydata: item.addParkSum })) || [];
+  incrementStatData.value = data.list.sort((a, b) => a.month - b.month).map(item => ({ xdata: item.month, ydata: item.addParkSum })) || [];
 }
 
 onMounted(async () => {

@@ -4,7 +4,7 @@
     <van-tab v-for="tab in tabList" :title="tab" :name="tab">
       <van-cell-group>
         <van-cell v-for="item in dataList" :title="item.title" :value="item.value" value-class="right" is-link
-          to="/revenueTrend" />
+          :to="`/revenueTrend?projectName=${projectName}`" />
       </van-cell-group>
     </van-tab>
   </van-tabs>
@@ -21,18 +21,19 @@ const active = ref('昨日');
 const tabList = ref(['昨日', '本周', '当月', '上月', '半年', '一年']);
 const dataList = ref([]);
 const revenueItemMap = {
-  '应收总额': 'receivableAmount',
+  '应收总额': 'operateAmount',
   '实收总额': 'receivableAmount',
-  '收费率': 'tempAmount',
+  '收费率': 'chargeRate',
   '临停收入': 'tempAmount',
   '长期收入': 'longAmount',
-  '月卡收入': 'longAmount',
+  '月卡收入': 'monthlyCard',
   '欠费金额': 'arrearAmount',
   '补缴金额': 'replenishAmount',
 };
 
 async function getRevenueData() {
   const { data } = await revenueData({ dateType: active.value, projectName: projectName.value });
+  data.list && (data.list.chargeRate = ((data.list.receivableAmount / data.list.operateAmount) * 100).toFixed(2) + '%');
   dataList.value = Object.keys(revenueItemMap).map(key => ({ title: key, value: data.list[revenueItemMap[key]] })) || [];
 }
 

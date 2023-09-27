@@ -1,7 +1,7 @@
 <template>
   <van-cell-group>
-    <van-cell v-for="item in list" :title="item.title" :value="item.value" value-class="right" :is-link="item.value > 0"
-      :to="item.value > 0 ? '/deviceStat' : ''" />
+    <van-cell v-for="item in dataList" :title="item.deviceName" :value="item.deviceNum" value-class="right"
+      :is-link="item.deviceNum > 0" :to="item.deviceNum > 0 ? `/deviceStat?projectName=${projectName}` : ''" />
   </van-cell-group>
 </template>
 
@@ -12,18 +12,11 @@ import { deviceData } from '@/api/index';
 
 const route = useRoute();
 const projectName = ref(route.query.projectName);
-const list = ref([
-  { title: '地磁', value: 0 },
-  { title: '高杆', value: 0 },
-  { title: '低杆', value: 0 },
-  { title: '手持机', value: 0 },
-  { title: '机器人', value: 86 },
-  { title: '巡检车', value: 0 },
-  { title: '车位锁', value: 0 },
-]);
+const dataList = ref([]);
 
 async function getDeviceData() {
-  await deviceData({ projectName: projectName.value });
+  const { data } = await deviceData({ projectName: projectName.value });
+  dataList.value = data.list || [];
 }
 
 onMounted(() => {

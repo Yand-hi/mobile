@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import drawChart from '../chart/chart';
 import commonTitle from '@/components/commonTitle.vue';
 

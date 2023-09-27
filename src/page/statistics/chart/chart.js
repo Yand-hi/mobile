@@ -11,22 +11,23 @@ function getOptions(type, data = []) {
 }
 
 function getLineOptions(data) {
-  const staticData = [
-    { xdata: '9/21', ydata: 15 },
-    { xdata: '9/20', ydata: 23 },
-    { xdata: '9/19', ydata: 22 },
-    { xdata: '9/18', ydata: 21 },
-    { xdata: '9/17', ydata: 13 },
-    { xdata: '9/16', ydata: 14 },
-    { xdata: '9/15', ydata: 14 },
-    { xdata: '9/14', ydata: 26 },
-  ];
-  const chartData = data || staticData;
+  const colorList = ['#3aa1ff', '#f2637b', '#fbd437', '#4ecb73', '#36cbcb'];
 
   const lineOptions = {
+    legend: {
+      data: data.map(item => item.name),
+      top: '8px',
+      left: '48px',
+      icon: 'roundRect',
+      itemHeight: 4,
+      itemGap: 24
+    },
+    tooltip: {
+      trigger: 'axis'
+    },
     xAxis: {
       type: 'category',
-      data: chartData.map(i => i.xdata),
+      data: data[0].data.map(i => i.xdata),
       boundaryGap: true,
       axisTick: {
         alignWithLabel: true
@@ -35,19 +36,28 @@ function getLineOptions(data) {
     yAxis: {
       type: 'value'
     },
-    series: [
-      {
-        type: 'line',
-        data: chartData.map(i => i.ydata),
-      },
-    ],
+    series: data.map((item, index) => ({
+      type: 'line',
+      name: item.name,
+      data: item.data.map(i => i.ydata),
+      itemStyle: {
+        color: colorList[index]
+      }
+    })),
     grid: {
-      top: '28px',
-      left: '28px',
-      right: '10px',
-      bottom: '36px'
+      top: '40px',
+      left: '50px',
+      right: '12px',
+      bottom: '32px'
     }
   };
+
+  if (data.length === 1) {
+    delete lineOptions.legend;
+    lineOptions.grid.top = '28px';
+    lineOptions.grid.left = '36px';
+    lineOptions.grid.bottom = '36px';
+  }
 
   return lineOptions;
 }
@@ -125,30 +135,40 @@ function getPieOptions({ title, data }) {
 
 function getBarOptions(data) {
   const barOptions = {
+    tooltip: {
+      trigger: 'axis',
+      formatter: function (params) {
+        var relVal = params[0].name;
+        for (var i = 0, l = params.length; i < l; i++) {
+          relVal += '<br/>' + params[i].marker + ' ' + params[i].value + '%';
+        }
+        return relVal;
+      }
+    },
     xAxis: {
       type: 'category',
-      data: ['9/5', '9/6', '9/7', '9/8', '9/9', '9/10', '9/11'],
+      data: data.map(i => i.xdata),
       boundaryGap: true,
       axisTick: {
         alignWithLabel: true
       }
     },
     yAxis: {
-      type: 'value'
+      type: 'value',
     },
     series: [
       {
         type: 'bar',
-        data: [24, 66, 55, 80, 70, 32, 18],
+        data: data.map(i => i.ydata),
         barWidth: '24px',
         itemStyle: {
-          color: '#3aa1ff'
+          color: '#3aa1ff',
         },
       }
     ],
     grid: {
       top: '28px',
-      left: '28px',
+      left: '34px',
       right: '10px',
       bottom: '36px'
     }

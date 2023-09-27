@@ -3,7 +3,7 @@
     <div class="wrapper">
       <span>{{ title }}</span>
       <span class="date">
-        <span>{{ formatDate() }}</span>
+        <span>{{ formatDate }}</span>
         <van-icon @click="openDatePicker" v-if="editable" name="clock-o" color="#1989fa" />
       </span>
     </div>
@@ -16,27 +16,27 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue';
+import { ref, computed, inject } from 'vue';
 
-defineProps({
+const props = defineProps({
   title: String,
   editable: Boolean
 });
 
+const getSelectDate = inject('getSelectDate');
 const day = new Date().getDate();
 const year = new Date().getFullYear();
 const month = new Date().getMonth() + 1;
 const show = ref(false);
 const maxDate = ref(new Date());
 const currentDate = ref([year, month, day]);
-
-function formatDate() {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+const format = (dateArr) => {
+  const year = dateArr[0];
+  const month = String(dateArr[1]).padStart(2, '0');
+  const day = String(dateArr[2]).padStart(2, '0');
   return `${year}-${month}-${day}`;
-}
+};
+const formatDate = ref(format([year, month, day]));
 
 function openDatePicker() {
   show.value = true;
@@ -47,12 +47,10 @@ function cancelDate() {
 }
 
 function confirmDate() {
+  formatDate.value = format(currentDate.value);
+  getSelectDate(formatDate.value, props.title);
   cancelDate();
 }
-
-watchEffect(() => {
-  console.log(currentDate.value);
-});
 </script>
 
 <style lang="scss" scoped>

@@ -1,26 +1,34 @@
 <template>
   <Layout>
-    <common-chart :chart-data="lineChartData" chart-type="line" title="地磁最近半年增量统计" />
-    <common-chart :chart-data="lineChartData" chart-type="line" title="高杆最近半年增量统计" />
-    <common-chart :chart-data="lineChartData" chart-type="line" title="巡检车最近半年增量统计" />
+    <common-chart v-for="item in dataList" :key="item.title" :chart-data="item.chartData" chart-type="line"
+      :title="`${item.title}最近半年增量统计`" />
   </Layout>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { ref, onMounted } from 'vue';
 import Layout from '@/components/layout.vue';
 import commonChart from '../components/commonChart.vue';
+import { deviceIncreaseData } from '@/api/index';
 
-const lineChartData = ref([
-  { xdata: '9/21', ydata: 15 },
-  { xdata: '9/20', ydata: 23 },
-  { xdata: '9/19', ydata: 22 },
-  { xdata: '9/18', ydata: 21 },
-  { xdata: '9/17', ydata: 13 },
-  { xdata: '9/16', ydata: 14 },
-  { xdata: '9/15', ydata: 14 },
-  { xdata: '9/14', ydata: 26 },
-]);
+const route = useRoute();
+const projectName = ref(route.query.projectName);
+const dataList = ref([]);
+
+async function getDeviceIncreaseData() {
+  const { data } = await deviceIncreaseData({ projectName: projectName.value });
+  let temp = [];
+  for (let i = 0; i < data.list.length;) temp.push(data.list.slice(i, i += 6).sort((a, b) => a.month - b.month));
+  dataList.value = temp.map(item => ({
+    title: item[0].deviceName,
+    chartData: [{ name: item[0].deviceName + '最近半年增量', data: item.map(i => ({ xdata: i.month, ydata: i.addDeviceNum })) }]
+  }));
+}
+
+onMounted(() => {
+  getDeviceIncreaseData();
+});
 </script>
 
 <style lang="scss" scoped></style>
