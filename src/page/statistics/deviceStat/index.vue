@@ -22,7 +22,7 @@ async function getDeviceIncreaseData() {
   for (let i = 0; i < data.list.length;) temp.push(data.list.slice(i, i += 6).sort((a, b) => a.month - b.month));
   dataList.value = temp.map(item => ({
     title: item[0].deviceName,
-    chartData: [{ name: item[0].deviceName + '最近半年增量', data: item.map(i => ({ xdata: i.month, ydata: i.addDeviceNum })) }]
+    chartData: [{ name: item[0].deviceName + '最近半年增量', data: item.map(i => ({ xdata: String(i.month).padStart(2, '0'), ydata: i.addDeviceNum })) }]
   }));
 }
 

@@ -15,10 +15,10 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     proxy: {
-      '/api': {
+      '/ProjectMonter': {
         target: 'http://192.168.20.80:8086/',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path) => path.replace(/^\/ProjectMonter/, ''),
       },
     }
   },

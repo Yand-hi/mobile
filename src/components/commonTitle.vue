@@ -8,7 +8,8 @@
       </span>
     </div>
     <div class="line"></div>
-    <van-popup v-model:show="show" :overlay="false" position="bottom" :style="{ height: '30%' }">
+    <van-popup v-model:show="show" round close-on-click-overlay safe-area-inset-bottom position="bottom"
+      style="overflow: hidden; height: 30%;">
       <van-date-picker v-model="currentDate" type="date" :max-date="maxDate" title="选择日期" @cancel="cancelDate"
         @confirm="confirmDate" />
     </van-popup>
@@ -16,7 +17,7 @@
 </template>
 
 <script setup>
-import { ref, computed, inject } from 'vue';
+import { ref, inject } from 'vue';
 
 const props = defineProps({
   title: String,

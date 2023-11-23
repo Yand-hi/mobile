@@ -43,7 +43,7 @@ async function getParkingLotRatio() {
 
 async function getIncrementStat() {
   const { data } = await incrementStat({ projectName: projectName.value });
-  incrementStatData.value = data.list.sort((a, b) => a.month - b.month).map(item => ({ xdata: item.month, ydata: item.addParkSum })) || [];
+  incrementStatData.value = data.list.sort((a, b) => a.month - b.month).map(item => ({ xdata: String(item.month).padStart(2, '0'), ydata: item.addParkSum })) || [];
 }
 
 onMounted(async () => {

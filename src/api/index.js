@@ -1,6 +1,6 @@
 import { createRestClient } from '@/request/useFetch';
 
-const { postForObject, getForObject } = createRestClient('./api');
+const { postForObject, getForObject } = createRestClient('');
 
 // 获取项目数据列表
 export const projectList = (data) => {
